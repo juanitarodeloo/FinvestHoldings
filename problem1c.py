@@ -9,7 +9,8 @@ class Role(Enum):
     TECHNICAL_SUPPORT = auto()
     TELLER = auto()
     COMPLIANCE_OFFICER = auto()
-   
+
+#print(Role.__members__)
 
 class Resource(Enum):
     ACCOUNT_BALANCE = auto()
