@@ -1,16 +1,14 @@
 from enum import Enum, auto
 
 class Role(Enum):
-    CLIENT = auto()
-    PREMIUM_CLIENT = auto()
-    FINANCIAL_PLANNER = auto()
-    FINANCIAL_ADVISOR = auto()
-    INVESTMENT_ANALYST = auto()
-    TECHNICAL_SUPPORT = auto()
-    TELLER = auto()
-    COMPLIANCE_OFFICER = auto()
-
-#print(Role.__members__)
+    CLIENT = 1
+    PREMIUM_CLIENT = 2
+    FINANCIAL_PLANNER = 3
+    FINANCIAL_ADVISOR = 4
+    INVESTMENT_ANALYST = 5
+    TECHNICAL_SUPPORT = 6
+    TELLER = 7
+    COMPLIANCE_OFFICER = 8
 
 class Resource(Enum):
     ACCOUNT_BALANCE = auto()
@@ -89,6 +87,27 @@ capabilities_list = { #maps roles to resources and the capabilities they have wi
 
 } 
 
+def get_role_values():
+    """Returns [1, 2, 3, 4, 5, 6, 7, 8]"""
+    return [role.value for role in Role]
+
+def get_role_name(role_number):
+    for role in Role:
+        if role.value == role_number:
+            return role
+    return None
+
+def print_role_capabilities(role):
+    
+    if role in capabilities_list:
+        #print(capabilities_list[role])
+        role_capabilities = capabilities_list[role]
+        for resource, permissions in role_capabilities.items():
+            permission_names = [permission.name for permission in permissions]
+            print(f"Resource: {resource.name}, Permissions: {', '.join(permission_names)}")
+
+get_role_name(1)
+# print_role_capabilities(Role.TELLER)
 
 def can_access(role, resource, capability):
     if role in capabilities_list and resource in capabilities_list[role]:
@@ -97,59 +116,59 @@ def can_access(role, resource, capability):
     return False
 
 
-#tests
-user1 = Role.CLIENT
-print("Client can view of their account balance details (Expected: True), Actual: ", 
-      can_access(user1,Resource.ACCOUNT_BALANCE,Permission.READ))
-print("Client can modify their account balance details: (Expected: False), Actual: ", 
-      can_access(user1,Resource.ACCOUNT_BALANCE,Permission.WRITE), "\n")
+# #tests
+# user1 = Role.CLIENT
+# print("Client can view of their account balance details (Expected: True), Actual: ", 
+#       can_access(user1,Resource.ACCOUNT_BALANCE,Permission.READ))
+# print("Client can modify their account balance details: (Expected: False), Actual: ", 
+#       can_access(user1,Resource.ACCOUNT_BALANCE,Permission.WRITE), "\n")
 
-user2 = Role.TELLER
-print("Teller has access to a system during on hours (Expected: True), Actual: ", 
-      can_access(user2, Resource.SYSTEM_ON_HOURS, Permission.ACCESS))
-print("Teller has access to a system during off hours (Expected: False), Actual: ", 
-      can_access(user2, Resource.SYSTEM_OFF_HOURS, Permission.ACCESS), "\n")
+# user2 = Role.TELLER
+# print("Teller has access to a system during on hours (Expected: True), Actual: ", 
+#       can_access(user2, Resource.SYSTEM_ON_HOURS, Permission.ACCESS))
+# print("Teller has access to a system during off hours (Expected: False), Actual: ", 
+#       can_access(user2, Resource.SYSTEM_OFF_HOURS, Permission.ACCESS), "\n")
 
-user3 = Role.PREMIUM_CLIENT
-print("Premium Client can modify their investment portfolio (Expected: True), Actual: ", 
-      can_access(user3,Resource.INVESTMENT_PORTFOLIO,Permission.WRITE))
-print("Premium Client can view money market instruments: (Expected: False), Actual: ", 
-      can_access(user1,Resource.MONEY_MARKET_INST,Permission.READ), "\n")
+# user3 = Role.PREMIUM_CLIENT
+# print("Premium Client can modify their investment portfolio (Expected: True), Actual: ", 
+#       can_access(user3,Resource.INVESTMENT_PORTFOLIO,Permission.WRITE))
+# print("Premium Client can view money market instruments: (Expected: False), Actual: ", 
+#       can_access(user1,Resource.MONEY_MARKET_INST,Permission.READ), "\n")
 
-user4 = Role.FINANCIAL_PLANNER
-print("Financial planner can view money market instruments (Expected: True), Actual: ", 
-      can_access(user4,Resource.MONEY_MARKET_INST,Permission.WRITE))
-print("Financial planner can request access to a client's account: (Expected: False), Actual: ", 
-      can_access(user4,Resource.CLIENT_ACCOUNT_ACCESS,Permission.ACCESS), "\n")
+# user4 = Role.FINANCIAL_PLANNER
+# print("Financial planner can view money market instruments (Expected: True), Actual: ", 
+#       can_access(user4,Resource.MONEY_MARKET_INST,Permission.WRITE))
+# print("Financial planner can request access to a client's account: (Expected: False), Actual: ", 
+#       can_access(user4,Resource.CLIENT_ACCOUNT_ACCESS,Permission.ACCESS), "\n")
 
-user5 = Role.FINANCIAL_ADVISOR
-print("Financial advisor can view private consumer instruments (Expected: True), Actual: ", 
-      can_access(user5, Resource.PRIV_CONS_INST,Permission.READ))
-print("Financial advisor can modify a private consumer instruments (Expected: False), Actual: ", 
-      can_access(user5, Resource.PRIV_CONS_INST,Permission.WRITE), "\n")
+# user5 = Role.FINANCIAL_ADVISOR
+# print("Financial advisor can view private consumer instruments (Expected: True), Actual: ", 
+#       can_access(user5, Resource.PRIV_CONS_INST,Permission.READ))
+# print("Financial advisor can modify a private consumer instruments (Expected: False), Actual: ", 
+#       can_access(user5, Resource.PRIV_CONS_INST,Permission.WRITE), "\n")
 
-user5 = Role.FINANCIAL_ADVISOR
-print("Financial advisor can view private consumer instruments (Expected: True), Actual: ", 
-      can_access(user5, Resource.PRIV_CONS_INST,Permission.READ))
-print("Financial advisor can modify a private consumer instruments (Expected: False), Actual: ", 
-      can_access(user5, Resource.PRIV_CONS_INST,Permission.WRITE), "\n")
+# user5 = Role.FINANCIAL_ADVISOR
+# print("Financial advisor can view private consumer instruments (Expected: True), Actual: ", 
+#       can_access(user5, Resource.PRIV_CONS_INST,Permission.READ))
+# print("Financial advisor can modify a private consumer instruments (Expected: False), Actual: ", 
+#       can_access(user5, Resource.PRIV_CONS_INST,Permission.WRITE), "\n")
 
-user6 = Role.INVESTMENT_ANALYST
-print("Investment analyst can view interest instruments (Expected: True), Actual: ", 
-      can_access(user6, Resource.INTEREST_INST, Permission.READ))
-print("Investment analyst can modify a money market instrument (Expected: False), Actual: ", 
-      can_access(user6, Resource.MONEY_MARKET_INST,Permission.WRITE), "\n")
+# user6 = Role.INVESTMENT_ANALYST
+# print("Investment analyst can view interest instruments (Expected: True), Actual: ", 
+#       can_access(user6, Resource.INTEREST_INST, Permission.READ))
+# print("Investment analyst can modify a money market instrument (Expected: False), Actual: ", 
+#       can_access(user6, Resource.MONEY_MARKET_INST,Permission.WRITE), "\n")
 
-user7 = Role.TECHNICAL_SUPPORT
-print("Technical support can request access to a client's account (Expected: True), Actual: ", 
-      can_access(user7, Resource.CLIENT_ACCOUNT_ACCESS, Permission.ACCESS))
-print("Technical support can modify a client's investment portfolio (Expected: False), Actual: ", 
-      can_access(user7, Resource.INVESTMENT_PORTFOLIO,Permission.WRITE), "\n")
+# user7 = Role.TECHNICAL_SUPPORT
+# print("Technical support can request access to a client's account (Expected: True), Actual: ", 
+#       can_access(user7, Resource.CLIENT_ACCOUNT_ACCESS, Permission.ACCESS))
+# print("Technical support can modify a client's investment portfolio (Expected: False), Actual: ", 
+#       can_access(user7, Resource.INVESTMENT_PORTFOLIO,Permission.WRITE), "\n")
 
-user8 = Role.COMPLIANCE_OFFICER
-print("Compliance officers can validate modifications to investment portfolios (Expected: True), Actual: ", 
-      can_access(user8, Resource.INVESTMENT_PORTFOLIO, Permission.READ))
-print("Compliance officers can modify a client's investment portfolio (Expected: False), Actual: ", 
-      can_access(user8, Resource.INVESTMENT_PORTFOLIO,Permission.WRITE), "\n")
+# user8 = Role.COMPLIANCE_OFFICER
+# print("Compliance officers can validate modifications to investment portfolios (Expected: True), Actual: ", 
+#       can_access(user8, Resource.INVESTMENT_PORTFOLIO, Permission.READ))
+# print("Compliance officers can modify a client's investment portfolio (Expected: False), Actual: ", 
+#       can_access(user8, Resource.INVESTMENT_PORTFOLIO,Permission.WRITE), "\n")
 
 
