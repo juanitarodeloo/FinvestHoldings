@@ -1,5 +1,7 @@
 from problem1c import *
 from problem2c import *
+import getpass
+
 
 
 def displayPermissions(username):
@@ -12,7 +14,7 @@ def displayPermissions(username):
     # print(role_capabilities)
 
 #login Users
-def loginUser():
+def loginUser(): #TODO: implement a max number of attempts
     userNameNotExist = True
 
     #loop until user enters a valid username
@@ -31,9 +33,14 @@ def loginUser():
             # print("\nsalt in file: " + saltInFile) #just for testing
             # print("hashed password in file: " + str(hashedPsswdInFile))
 
+            numOfAttempts = 0
+            MAX_ATTEMPTS = 5
+
             #loop until user enters correct password
-            while(incorrectPassword):
-                userPasswd = input("Enter password: ")  
+            while incorrectPassword and numOfAttempts < MAX_ATTEMPTS:
+                
+                userPasswd = getpass.getpass("Enter password: ")  
+                print("You entered: ", userPasswd)
                 newHash = hash_password(userPasswd, saltInFile)
                 
                 #print("\ncalculated hash from user input: " + newHash)
@@ -42,7 +49,12 @@ def loginUser():
                     displayPermissions(username)
                     incorrectPassword = False
                 else:
+                    numOfAttempts += 1
                     print("Incorrect Password. Try again! ")
+            
+            if numOfAttempts == MAX_ATTEMPTS:
+                print("Maximum attempts reached. Ending session.")
+                #TODO: call init
 
             
 
