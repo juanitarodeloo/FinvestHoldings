@@ -2,61 +2,66 @@ from problem1c import *
 from problem2c import *
 import getpass
 
-
-
-def displayPermissions(username):
-    print("UserID: ", username, " has the following permissions: ")
-    roleNum = get_role_num(username)
-    role = get_role_name(roleNum)
-    print_role_capabilities(role)
+class Login:
+    """Login handles the actions performed when a user tries to login to an already existing account. """
     
-    # role_capabilities = capabilities_list.get(Role.role_name, {})
-    # print(role_capabilities)
+    def __init__(self):
+        self.AccessControl = AccessControl()
+        self.PasswordManagement = PasswordManagement()
 
-#login Users
-def loginUser(): #TODO: implement a max number of attempts
-    userNameNotExist = True
+    def display_permissions(self, username):
+        """Prints permissions for the given username"""
+        print("UserID:", username, "has the following permissions: ")
+        roleNum = self.PasswordManagement.get_role_num(username)
+        role = self.AccessControl.get_role_name(roleNum)
+        self.AccessControl.print_role_capabilities(role)
+        # role_capabilities = capabilities_list.get(Role.role_name, {})
+        # print(role_capabilities)
 
-    #loop until user enters a valid username
-    while(userNameNotExist):
-        username = input("Enter username: ")
-        passwordRecord = get_password_record(username)
-        #print("full hashed record in file: " + passwordRecord)
+    def login_user(self):
+        """Logs in user"""
+        userNameNotExist = True
 
-        if passwordRecord is None:
-            print("Record with that username does not exist, try again. ")
-        else:
-            userNameNotExist = False
-            incorrectPassword = True
-            saltInFile = get_salt(username)
-            hashedPsswdInFile = get_hashed_password(username)
-            # print("\nsalt in file: " + saltInFile) #just for testing
-            # print("hashed password in file: " + str(hashedPsswdInFile))
+        #loop until user enters a valid username
+        while(userNameNotExist):
+            username = input("Enter username: ")
+            passwordRecord = self.PasswordManagement.get_password_record(username)
+            #print("full hashed record in file: " + passwordRecord)
 
-            numOfAttempts = 0
-            MAX_ATTEMPTS = 5
+            if passwordRecord is None:
+                print("That username does not exist, try again. ")
+            else:
+                userNameNotExist = False
+                incorrectPassword = True
+                saltInFile = self.PasswordManagement.get_salt(username)
+                hashedPsswdInFile = self.PasswordManagement.get_hashed_password(username)
+                # print("\nsalt in file: " + saltInFile) #just for testing
+                # print("hashed password in file: " + str(hashedPsswdInFile))
 
-            #loop until user enters correct password
-            while incorrectPassword and numOfAttempts < MAX_ATTEMPTS:
+                numOfAttempts = 0
+                MAX_ATTEMPTS = 5
+
+                #loop until user enters correct password or until they reach max attempts
+                while incorrectPassword and numOfAttempts < MAX_ATTEMPTS:
+                    
+                    userPasswd = getpass.getpass("Enter password: ")  
+                    print("You entered: ", userPasswd) #TODO: just for testing, take out
+                    newHash = self.PasswordManagement.hash_password(userPasswd, saltInFile)
+                    
+                    #print("\ncalculated hash from user input: " + newHash)
+                    if(hashedPsswdInFile == newHash):
+                        print("\nACCESS GRANTED\n")
+                        self.display_permissions(username)
+                        incorrectPassword = False
+                    else:
+                        numOfAttempts += 1
+                        print("Incorrect Password. Try again!\n")
                 
-                userPasswd = getpass.getpass("Enter password: ")  
-                print("You entered: ", userPasswd)
-                newHash = hash_password(userPasswd, saltInFile)
-                
-                #print("\ncalculated hash from user input: " + newHash)
-                if(hashedPsswdInFile == newHash):
-                    print("ACCESS GRANTED")
-                    displayPermissions(username)
-                    incorrectPassword = False
-                else:
-                    numOfAttempts += 1
-                    print("Incorrect Password. Try again! ")
-            
-            if numOfAttempts == MAX_ATTEMPTS:
-                print("Maximum attempts reached. Ending session.")
-                #TODO: call init
+                if numOfAttempts == MAX_ATTEMPTS:
+                    print("Maximum attempts reached. Ending session.")
+                    
 
-            
+                
 
 
 
