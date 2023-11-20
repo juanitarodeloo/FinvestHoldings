@@ -9,7 +9,7 @@ class Enrol:
 
     def __init__(self):
         self.AccessControl = AccessControl()
-        self.PasswordManagement = PasswordManagement()
+        self.PasswordManagement = PasswordManagement("passwd.txt")
 
     def validate_password(self, username, passwordToCheck):
         """Returns True and an empty message if the given password meets the password policy requirements.
