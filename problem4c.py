@@ -7,7 +7,7 @@ class Login:
     
     def __init__(self):
         self.AccessControl = AccessControl()
-        self.PasswordManagement = PasswordManagement()
+        self.PasswordManagement = PasswordManagement("passwd.txt")
 
     def display_permissions(self, username):
         """Prints permissions for the given username"""
