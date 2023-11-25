@@ -139,16 +139,6 @@ class Enrol:
 
 
 
-#tests
-#TODO: implement a test for each incorrect password condition
-#good password: sP@sswd11!
-
-#test login:
-#username: sPedari
-#password: Hel!12hj
-
-
-
 
 
 

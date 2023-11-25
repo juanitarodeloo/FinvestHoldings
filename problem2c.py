@@ -3,7 +3,6 @@ import secrets
 
 class PasswordManagement:
 
-    #TODO: have a class variable that is the password file that is passed when creating a new instance of this class 
     def __init__(self, password_file = "passwd.txt"):
         self.password_file = password_file
 
@@ -26,7 +25,6 @@ class PasswordManagement:
         try:
             with open(self.password_file, 'a') as file:
                 record = f"{username}:{role}:{salt}:{hashed_password}\n"
-                print("\nWriting this record in the file: ", record) #just for testing
                 file.write(record)
         except FileNotFoundError:
             print("Password file not found. ")
@@ -79,26 +77,3 @@ class PasswordManagement:
 
     def get_password_file(self):
         return self.password_file
-                
-
-
-#example username and password
-# password = "jPassword"
-# username = "jrodelo" #TODO: should i have a UID or can I make the username unique?
-# genSalt = generate_salt()
-#print("\ngenerated salt: " , genSalt)
-
-# h = hash_password(password, genSalt)
-# save_password_record(username, genSalt, h)
-
-
-
-# retrieved_record = get_password_record(username)
-# print("record for username jrodelo: ", retrieved_record)
-
-# print("\nsalt in file: " + str(get_salt(username))) #just for testing
-# print("\nhashed password in file: " + str(get_hashed_password(username))) #just for testing
-
-
-
-
