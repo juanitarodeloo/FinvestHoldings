@@ -5,19 +5,16 @@ import getpass
 class Login:
     """Login handles the actions performed when a user tries to login to an already existing account. """
     
-    def __init__(self):
+    def __init__(self, password_file = "passwd.txt"):
         self.AccessControl = AccessControl()
-        self.PasswordManagement = PasswordManagement("passwd.txt")
+        self.PasswordManagement = PasswordManagement(password_file)
 
     def display_permissions(self, username):
         """Prints permissions for the given username"""
-        print("UserID:", username, "has the following permissions: ")
         roleNum = self.PasswordManagement.get_role_num(username)
         role = self.AccessControl.get_role_name(roleNum)
+        print("UserID:", username, "with the role: ", role.name ,"has the following permissions: ")
         self.AccessControl.print_role_capabilities(role)
-        #TODO: display role
-        # role_capabilities = capabilities_list.get(Role.role_name, {})
-        # print(role_capabilities)
 
     def login_user(self):
         """Logs in user"""
@@ -27,7 +24,6 @@ class Login:
         while(userNameNotExist):
             username = input("Enter username: ")
             passwordRecord = self.PasswordManagement.get_password_record(username)
-            #print("full hashed record in file: " + passwordRecord)
 
             if passwordRecord is None:
                 print("That username does not exist, try again. ")
@@ -36,8 +32,6 @@ class Login:
                 incorrectPassword = True
                 saltInFile = self.PasswordManagement.get_salt(username)
                 hashedPsswdInFile = self.PasswordManagement.get_hashed_password(username)
-                # print("\nsalt in file: " + saltInFile) #just for testing
-                # print("hashed password in file: " + str(hashedPsswdInFile))
 
                 numOfAttempts = 0
                 MAX_ATTEMPTS = 5
@@ -46,7 +40,6 @@ class Login:
                 while incorrectPassword and numOfAttempts < MAX_ATTEMPTS:
                     
                     userPasswd = getpass.getpass("Enter password: ")  
-                    print("You entered: ", userPasswd) #TODO: just for testing, take out
                     newHash = self.PasswordManagement.hash_password(userPasswd, saltInFile)
                     
                     #print("\ncalculated hash from user input: " + newHash)
