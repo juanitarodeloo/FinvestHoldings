@@ -18,7 +18,7 @@ class MainApp:
             enrolOrLogin = input("Enter 1 if you want to create a new account. Enter 2 if you want to login: ")
             if(enrolOrLogin == '1'):
                 invalidInput = False
-                self.enrol.enrolUser()
+                self.enrol.prompt_enrol()
             elif(enrolOrLogin == '2'):
                 invalidInput = False
                 print("Login:\n")
@@ -30,3 +30,8 @@ class MainApp:
 if __name__ == "__main__":
     app = MainApp()
     app.run()
+
+    #admin account:
+    #username: admin
+    #Passwrd: SySc4810!#
+    #Technical Support

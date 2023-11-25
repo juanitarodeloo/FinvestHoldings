@@ -7,9 +7,10 @@ from problem1c import *
 
 class Enrol:
 
-    def __init__(self):
+    def __init__(self, password_file = "passwd.txt"):
+        self.password_file = password_file
         self.AccessControl = AccessControl()
-        self.PasswordManagement = PasswordManagement("passwd.txt")
+        self.PasswordManagement = PasswordManagement(password_file)
 
     def validate_password(self, username, passwordToCheck):
         """Returns True and an empty message if the given password meets the password policy requirements.
@@ -72,16 +73,16 @@ class Enrol:
             weakPasswordList = [line.strip() for line in file]
             if passwordToCheck in weakPasswordList:
                 returnVal = False
-                m += "Password is too common, choose a new one."
+                m += "Password is too common, choose a new one. "
         
         if(returnVal):
             m = 'Password Created!'
 
         return returnVal, m
             
-    def userNameExists(self, username):
+    def username_exists(self, username):
         """Returns True if the given username exists in the password file. Returns False otherwise. """
-        with open('passwd.txt', 'r') as file: #try-catch around
+        with open(self.password_file, 'r') as file: #try-catch around
             for line in file:
                 usernameInFile = (line.split(":"))[0].strip()
                 if username == usernameInFile:
@@ -89,13 +90,13 @@ class Enrol:
                 
         return False
 
-    def getUserRole(self):
+    def prompt_user_role(self):
         """Prompts user for their role in the company. Returns the number associated with the role they select. """
         invalidRole = True
         while(invalidRole):
-            userRole = input("What is your role?\nEnter 1 if you are a Client. Enter 2 if you are a Premium Client. Enter 3 if you are" +
-                "a Financial Planner. Enter 4 if you are a Financial Advisor. Enter 5 if you are an Investment Analyst. " +
-                "Enter 6 if you are a Technical Supprt. Enter 7 if you are a Teller. Enter 8 if you are a Compliance Officer.\n")
+            userRole = input("What is your role?\nEnter 1 if you are a Client.\nEnter 2 if you are a Premium Client.\nEnter 3 if you are" +
+                "a Financial Planner.\nEnter 4 if you are a Financial Advisor.\nEnter 5 if you are an Investment Analyst.\n" +
+                "Enter 6 if you are a Technical Supprt.\nEnter 7 if you are a Teller.\nEnter 8 if you are a Compliance Officer.\n")
             try:
                 intUserRoleVal = int(userRole)
                 if intUserRoleVal in self.AccessControl.get_role_values():
@@ -110,12 +111,12 @@ class Enrol:
 
 
 
-    def enrolUser(self):
+    def prompt_enrol(self):
         """Prompts user for a username and checks that it doesn't already exist in the password file. """
         userNameTaken = True
         while(userNameTaken):
             newUserName = input("Enter new username:\n")
-            userNameTaken = self.userNameExists(newUserName)
+            userNameTaken = self.username_exists(newUserName)
             if userNameTaken:
                 print("Username already exists. Use a different one. ")
 
@@ -128,7 +129,7 @@ class Enrol:
                 print("Invalid password.", m, "\nTry again")
     
         #ask user what role they want to have
-        userRole = self.getUserRole()
+        userRole = self.prompt_user_role()
 
         #hash password and store record in file
         gen_salt = self.PasswordManagement.generate_salt()

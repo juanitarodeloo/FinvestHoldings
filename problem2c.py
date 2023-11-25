@@ -77,7 +77,8 @@ class PasswordManagement:
 
         return hashed_password
 
-
+    def get_password_file(self):
+        return self.password_file
                 
 
 

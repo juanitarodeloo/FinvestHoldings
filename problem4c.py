@@ -15,6 +15,7 @@ class Login:
         roleNum = self.PasswordManagement.get_role_num(username)
         role = self.AccessControl.get_role_name(roleNum)
         self.AccessControl.print_role_capabilities(role)
+        #TODO: display role
         # role_capabilities = capabilities_list.get(Role.role_name, {})
         # print(role_capabilities)
 
