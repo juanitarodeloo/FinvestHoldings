@@ -1,5 +1,5 @@
-from problem4c import *
-from problem3c import *
+from problem4d import *
+from problem3d import *
 
 class MainApp:
     """MainApp will hold the main application code that dispatches program. """

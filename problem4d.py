@@ -1,5 +1,5 @@
-from problem1c import *
-from problem2c import *
+from problem1d import *
+from problem2d import *
 import getpass
 
 class Login:
@@ -42,7 +42,6 @@ class Login:
                     userPasswd = getpass.getpass("Enter password: ")  
                     newHash = self.PasswordManagement.hash_password(userPasswd, saltInFile)
                     
-                    #print("\ncalculated hash from user input: " + newHash)
                     if(hashedPsswdInFile == newHash):
                         print("\nACCESS GRANTED\n")
                         self.display_permissions(username)

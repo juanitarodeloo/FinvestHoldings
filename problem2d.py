@@ -8,11 +8,10 @@ class PasswordManagement:
 
 
     def hash_password(self, password, salt):
-        """Hashes the given plaintext password and salt using SHA-256 encryption algorithm. Returns the hashed password."""
+        """Hashes the given plaintext password and salt using SHA-256 encryption algorithm. 
+        Returns the hashed password."""
         sha256 = hashlib.sha256()
-        #genSalt = secrets.token_hex()
         sha256.update(password.encode() + salt.encode())
-        # hashed_psswd = sha256.digest()
         hashed_psswd = sha256.hexdigest()
         return hashed_psswd
 
@@ -32,7 +31,8 @@ class PasswordManagement:
             print(f"Error writing to file {e}")
 
     def get_password_record(self, username):
-        """Returns the full password record for the given usernamevthat is stored in the password file. Returns null if username does not exist in file."""
+        """Returns the full password record for the given usernamevthat is stored in the password file. 
+        Returns null if username does not exist in file."""
         try:
             with open(self.password_file, 'r') as file:
                 for line in file:
@@ -44,7 +44,8 @@ class PasswordManagement:
         return None
 
     def get_role_num(self, username):
-        """Returns the role number stored in the password file associated with the given username. If there was a problem extracting the role number, this returns None. """
+        """Returns the role number stored in the password file associated with the given username. 
+        If there was a problem extracting the role number, this returns None. """
         full_record = self.get_password_record(username)
         role_num = None
         try:
@@ -54,7 +55,8 @@ class PasswordManagement:
         return role_num
 
     def get_salt(self, username):
-        """Returns the salt stored in the password file associated with the given username. If there was an error extracting the salt, this returns None. """
+        """Returns the salt stored in the password file associated with the given username. If there was an error 
+        extracting the salt, this returns None. """
         full_record = self.get_password_record(username)
         salt = None
         try:
@@ -65,7 +67,8 @@ class PasswordManagement:
         return salt
 
     def get_hashed_password(self, username):
-        """Returns the hashed password stored in the password file associated with the given username. If there was a problem extracting the hashed password, this returns None. """
+        """Returns the hashed password stored in the password file associated with the given username. If there was a 
+        problem extracting the hashed password, this returns None. """
         full_record = self.get_password_record(username)
         hashed_password = None
         try:

@@ -2,7 +2,7 @@ import unittest
 import sys
 from io import StringIO
 
-from problem1c import *
+from problem1d import *
 
 class TestAccessControl(unittest.TestCase):
 
@@ -25,13 +25,11 @@ class TestAccessControl(unittest.TestCase):
         role_name = self.access_control.get_role_name(7)
         self.assertEqual(role_name, Role.TELLER)
 
-
-    def test_get_role_name_invalid(self):
-        """Tests get_role_name() with an invalid role number"""
         role_name = self.access_control.get_role_name(99)
         self.assertIsNone(role_name)
+        
 
-    def test_print_role_capabilities(self):
+    def test_print_role_capabilities(self): #TODO: should I test every role?
         """Tests print_role_capabilities()"""
         #redirect stdout to capture the print output
         captured_output = StringIO()
@@ -49,8 +47,9 @@ class TestAccessControl(unittest.TestCase):
                           "Resource: SYSTEM_ON_HOURS, Permissions: ACCESS\n"
         self.assertEqual(captured_output.getvalue(), expected_output)
 
-    def test_can_access_true(self):
-        """Tests can_access() with true conditions for each role"""
+    def test_can_access(self):
+        """Tests can_access() with true and false conditions for each role"""
+        #true conditions
         result = self.access_control.can_access(Role.CLIENT, Resource.ACCOUNT_BALANCE, Permission.READ)
         self.assertTrue(result)
 
@@ -75,8 +74,7 @@ class TestAccessControl(unittest.TestCase):
         result = self.access_control.can_access(Role.COMPLIANCE_OFFICER, Resource.INVESTMENT_PORTFOLIO, Permission.READ)
         self.assertTrue(result)
 
-    def test_can_access_false(self):
-        """Tests can_access() with false conditions"""
+        #false conditions:
         result = self.access_control.can_access(Role.CLIENT, Resource.ACCOUNT_BALANCE, Permission.WRITE)
         self.assertFalse(result)
 

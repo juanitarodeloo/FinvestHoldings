@@ -1,9 +1,9 @@
 #Enrol Users
 import getpass
 import re
-from problem2c import *
-from problem4c import *
-from problem1c import *
+from problem2d import *
+from problem4d import *
+from problem1d import *
 
 class Enrol:
 

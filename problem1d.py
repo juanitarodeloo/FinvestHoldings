@@ -22,8 +22,8 @@ class Resource(Enum):
     DERIVATIVES_TRADING = auto()
     INTEREST_INST = auto()
     CLIENT_ACCOUNT_ACCESS = auto()
-    SYSTEM_OFF_HOURS = auto() #everyone should have this resource exept tellers
-    SYSTEM_ON_HOURS = auto() #everyone should have access to this
+    SYSTEM_OFF_HOURS = auto()
+    SYSTEM_ON_HOURS = auto()
 
 class Permission(Enum):
     """Permissions define permissions to resources in Finvest Holdings"""
@@ -36,7 +36,7 @@ class AccessControl:
     """AccessControl holds the capabilities list and functions that grab information from it"""
 
     def __init__(self):
-        self.capabilities_list = { #maps roles to resources and the capabilities they have with that resource
+        self.capabilities_list = {
             Role.CLIENT: {
                 Resource.ACCOUNT_BALANCE: [Permission.READ],
                 Resource.INVESTMENT_PORTFOLIO: [Permission.READ],
@@ -78,7 +78,7 @@ class AccessControl:
                 Resource.SYSTEM_ON_HOURS: [Permission.ACCESS]
             },
             Role.TECHNICAL_SUPPORT:{
-                Resource.ACCOUNT_BALANCE: [Permission.READ], #assuming client information includes these two resources
+                Resource.ACCOUNT_BALANCE: [Permission.READ],
                 Resource.INVESTMENT_PORTFOLIO: [Permission.READ],
                 Resource.CLIENT_ACCOUNT_ACCESS: [Permission.ACCESS],
                 Resource.SYSTEM_OFF_HOURS: [Permission.ACCESS],
@@ -88,7 +88,7 @@ class AccessControl:
                 Resource.SYSTEM_ON_HOURS: [Permission.ACCESS]
             },
             Role.COMPLIANCE_OFFICER: {
-                Resource.INVESTMENT_PORTFOLIO: [Permission.READ], #I think this is what validate mods to this means
+                Resource.INVESTMENT_PORTFOLIO: [Permission.READ],
                 Resource.SYSTEM_OFF_HOURS: [Permission.ACCESS]
             }
 
@@ -120,61 +120,4 @@ class AccessControl:
             return capability in self.capabilities_list[role][resource]
 
         return False
-
-
-# #tests
-# user1 = Role.CLIENT
-# print("Client can view of their account balance details (Expected: True), Actual: ", 
-#       can_access(user1,Resource.ACCOUNT_BALANCE,Permission.READ))
-# print("Client can modify their account balance details: (Expected: False), Actual: ", 
-#       can_access(user1,Resource.ACCOUNT_BALANCE,Permission.WRITE), "\n")
-
-# user2 = Role.TELLER
-# print("Teller has access to a system during on hours (Expected: True), Actual: ", 
-#       can_access(user2, Resource.SYSTEM_ON_HOURS, Permission.ACCESS))
-# print("Teller has access to a system during off hours (Expected: False), Actual: ", 
-#       can_access(user2, Resource.SYSTEM_OFF_HOURS, Permission.ACCESS), "\n")
-
-# user3 = Role.PREMIUM_CLIENT
-# print("Premium Client can modify their investment portfolio (Expected: True), Actual: ", 
-#       can_access(user3,Resource.INVESTMENT_PORTFOLIO,Permission.WRITE))
-# print("Premium Client can view money market instruments: (Expected: False), Actual: ", 
-#       can_access(user1,Resource.MONEY_MARKET_INST,Permission.READ), "\n")
-
-# user4 = Role.FINANCIAL_PLANNER
-# print("Financial planner can view money market instruments (Expected: True), Actual: ", 
-#       can_access(user4,Resource.MONEY_MARKET_INST,Permission.WRITE))
-# print("Financial planner can request access to a client's account: (Expected: False), Actual: ", 
-#       can_access(user4,Resource.CLIENT_ACCOUNT_ACCESS,Permission.ACCESS), "\n")
-
-# user5 = Role.FINANCIAL_ADVISOR
-# print("Financial advisor can view private consumer instruments (Expected: True), Actual: ", 
-#       can_access(user5, Resource.PRIV_CONS_INST,Permission.READ))
-# print("Financial advisor can modify a private consumer instruments (Expected: False), Actual: ", 
-#       can_access(user5, Resource.PRIV_CONS_INST,Permission.WRITE), "\n")
-
-# user5 = Role.FINANCIAL_ADVISOR
-# print("Financial advisor can view private consumer instruments (Expected: True), Actual: ", 
-#       can_access(user5, Resource.PRIV_CONS_INST,Permission.READ))
-# print("Financial advisor can modify a private consumer instruments (Expected: False), Actual: ", 
-#       can_access(user5, Resource.PRIV_CONS_INST,Permission.WRITE), "\n")
-
-# user6 = Role.INVESTMENT_ANALYST
-# print("Investment analyst can view interest instruments (Expected: True), Actual: ", 
-#       can_access(user6, Resource.INTEREST_INST, Permission.READ))
-# print("Investment analyst can modify a money market instrument (Expected: False), Actual: ", 
-#       can_access(user6, Resource.MONEY_MARKET_INST,Permission.WRITE), "\n")
-
-# user7 = Role.TECHNICAL_SUPPORT
-# print("Technical support can request access to a client's account (Expected: True), Actual: ", 
-#       can_access(user7, Resource.CLIENT_ACCOUNT_ACCESS, Permission.ACCESS))
-# print("Technical support can modify a client's investment portfolio (Expected: False), Actual: ", 
-#       can_access(user7, Resource.INVESTMENT_PORTFOLIO,Permission.WRITE), "\n")
-
-# user8 = Role.COMPLIANCE_OFFICER
-# print("Compliance officers can validate modifications to investment portfolios (Expected: True), Actual: ", 
-#       can_access(user8, Resource.INVESTMENT_PORTFOLIO, Permission.READ))
-# print("Compliance officers can modify a client's investment portfolio (Expected: False), Actual: ", 
-#       can_access(user8, Resource.INVESTMENT_PORTFOLIO,Permission.WRITE), "\n")
-
-
+    
