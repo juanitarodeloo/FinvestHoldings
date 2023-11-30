@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from problem3d import *
 
 class TestEnrol(unittest.TestCase):
@@ -12,7 +13,6 @@ class TestEnrol(unittest.TestCase):
         try:
             with open("test_passwd.txt", 'a') as file:
                 record = f"{username}:{role}:{salt}:{hashed_password}\n"
-                print("\nWriting this record in the file: ", record) #just for testing
                 file.write(record)
         except FileNotFoundError:
             print("Password file not found. ")
@@ -28,8 +28,8 @@ class TestEnrol(unittest.TestCase):
             print(f"File 'test_passwd.txt' not found.")
 
     def test_validate_password(self):
-        """Tests validate_password() by passing the actual method example passwords that should violate each condition
-        and test passwords that should pass all conditions"""
+        """Tests validate_password() by passing the actual method example passwords that should violate 
+        each condition and test passwords that should pass all conditions"""
 
         #Checks that the password isn't equal to username
         result, message = self.enrol.validate_password("john_doe", "john_doe")
@@ -101,7 +101,21 @@ class TestEnrol(unittest.TestCase):
         #Checks that a non existing username exists
         self.assertFalse(self.enrol.username_exists("DoesntExist"))
 
+    @patch("builtins.input", test_inputs=["1", "13", "invalid"])
+    def test_prompt_user_role(self, mock_input):
+        # Test valid role input
+        with patch("builtins.input", return_value="1"):
+            result = self.enrol.prompt_user_role()
+            self.assertEqual(result, 1)
 
+        # Test invalid role input, still a number
+        with patch("builtins.input", return_value="13"):
+            self.assertRaises(ValueError)
+
+        # Test invalid role input, not a number
+        with patch("builtins.input", return_value="invalid"):
+            self.assertRaises(ValueError)
+                
 
 if __name__ == '__main__':
     unittest.main()
