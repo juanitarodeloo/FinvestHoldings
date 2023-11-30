@@ -10,42 +10,42 @@ class Enrol:
     def __init__(self, password_file = "passwd.txt"):
         self.password_file = password_file
         self.AccessControl = AccessControl()
-        self.PasswordManagement = PasswordManagement(password_file)
+        self.PasswordManagement = PasswordManagement(self.password_file)
 
     def validate_password(self, username, passwordToCheck):
-        """Returns True and an empty message if the given password meets the password policy requirements.
+        """Returns True and an success message if the given password meets the password policy requirements.
         Returns False along with a message that says which requirement(s) the password does not meet. """
         m = ""
         returnVal = True
 
         # password must not match the username
-        if passwordToCheck.lower() == username.lower(): #tested
+        if passwordToCheck.lower() == username.lower():
             returnVal = False
             m += "Password should not match the username. "
 
         # must be 8-12 chars
-        if not 8 <= len(passwordToCheck)<= 12: #tested
+        if not 8 <= len(passwordToCheck)<= 12:
             returnVal = False
             m += "Password must be between 8 to 12 characters long. "
         
         # must have at least one uppercase letter:
-        if not any(char.isupper() for char in passwordToCheck): #tested
+        if not any(char.isupper() for char in passwordToCheck):
             returnVal = False
             m += "Password must include at least one upper-case letter. "
 
         # must have at least one lowercase letter
-        if not any(char.islower() for char in passwordToCheck): #tested
+        if not any(char.islower() for char in passwordToCheck):
             returnVal = False
             m += "Password must include at least one lower-case letter. "
 
         # must have at least one numerical digit
-        if not any(char.isdigit() for char in passwordToCheck): #tested
+        if not any(char.isdigit() for char in passwordToCheck):
             returnVal = False
             m += "Password must include at least one numerical digit. " 
 
         # must have at least one special character
         specialChars = {'!', '@', '#', '$', '%', '?', '*'}
-        if not any(char in specialChars for char in passwordToCheck): #tested
+        if not any(char in specialChars for char in passwordToCheck):
             returnVal = False
             m += "Password must include at least one special character: {!@#$%?*}. "
         
@@ -69,7 +69,7 @@ class Enrol:
             m += "Password should not match the format of common phone numbers. "
 
         # must not be listed in weak passwords list
-        with open('weakPasswords.txt', 'r') as file: #tested
+        with open('weakPasswords.txt', 'r') as file:
             weakPasswordList = [line.strip() for line in file]
             if passwordToCheck in weakPasswordList:
                 returnVal = False
@@ -82,11 +82,14 @@ class Enrol:
             
     def username_exists(self, username):
         """Returns True if the given username exists in the password file. Returns False otherwise. """
-        with open(self.password_file, 'r') as file: #try-catch around
-            for line in file:
-                usernameInFile = (line.split(":"))[0].strip()
-                if username == usernameInFile:
-                    return True
+        try:
+            with open(self.password_file, 'r') as file:
+                for line in file:
+                    usernameInFile = (line.split(":"))[0].strip()
+                    if username == usernameInFile:
+                        return True
+        except FileNotFoundError:
+            print("Password file not found. ")
                 
         return False
 
@@ -100,7 +103,6 @@ class Enrol:
             try:
                 intUserRoleVal = int(userRole)
                 if intUserRoleVal in self.AccessControl.get_role_values():
-                    #print("\nValid role number. ")
                     invalidRole = False
                 else:
                     print("\nInvalid role number. Try again. ")
@@ -112,7 +114,8 @@ class Enrol:
 
 
     def prompt_enrol(self):
-        """Prompts user for a username and checks that it doesn't already exist in the password file. """
+        """Prompts user for a username, checks that it doesn't already exist in the password file and prompts
+        then for a password if it is a unique username. """
         userNameTaken = True
         while(userNameTaken):
             newUserName = input("Enter new username:\n")

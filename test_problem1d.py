@@ -29,7 +29,7 @@ class TestAccessControl(unittest.TestCase):
         self.assertIsNone(role_name)
         
 
-    def test_print_role_capabilities(self): #TODO: should I test every role?
+    def test_print_role_capabilities(self):
         """Tests print_role_capabilities()"""
         #redirect stdout to capture the print output
         captured_output = StringIO()

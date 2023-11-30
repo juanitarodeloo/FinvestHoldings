@@ -97,7 +97,6 @@ class TestPasswordManagement(unittest.TestCase):
             print(f"In test_get_role_num: Error writing to file {e}")
         
         self.assertEqual(self.password_manager.get_role_num(username), 3)
-
         #Test getting a role that does not exists in the password file:
         self.assertNotEqual(self.password_manager.get_role_num(username), 10)
 
@@ -118,9 +117,8 @@ class TestPasswordManagement(unittest.TestCase):
             print("In test_get_salt: Password file not found. ")
         except IOError as e:
             print(f"In test_get_salt: Error writing to file {e}")
-        
-        self.assertEqual(self.password_manager.get_salt(username), "test_salt4")
 
+        self.assertEqual(self.password_manager.get_salt(username), "test_salt4")
         #Test getting a salt that does not exists in the password file:
         self.assertNotEqual(self.password_manager.get_salt(username), "invalid_salt")
 
