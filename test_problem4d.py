@@ -4,7 +4,7 @@ import sys
 from io import StringIO
 from problem4d import *
 
-class TestEnrol(unittest.TestCase):
+class TestLogin(unittest.TestCase):
 
     def setUp(self):
         self.login = Login("test_passwd.txt")
