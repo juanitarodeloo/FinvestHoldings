@@ -53,8 +53,3 @@ class Login:
                 if numOfAttempts == MAX_ATTEMPTS:
                     print("Maximum attempts reached. Ending session.")
                     
-
-                
-
-
-

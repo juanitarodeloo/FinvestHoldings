@@ -138,16 +138,3 @@ class Enrol:
         gen_salt = self.PasswordManagement.generate_salt()
         newHashedPsswd = self.PasswordManagement.hash_password(userPsswd, gen_salt)
         self.PasswordManagement.save_password_record(newUserName, userRole, gen_salt, newHashedPsswd)
-
-
-
-
-
-
-
-    
-    
-
-    
-
-
